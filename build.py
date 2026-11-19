@@ -271,8 +271,9 @@ def work_html(work, media_index, asset_url):
             f'{title}{subtitle}{point_list}{gallery}{video}</div></article>')
 
 
-def source_entry_html(citation, paragraphs):
-    lines = [f'<article class="source-entry"><h5>{escape(citation["title"])}</h5>']
+def source_entry_html(work, citation, paragraphs):
+    lines = [f'<article class="source-entry" data-source-for="{slug(work)}" hidden>'
+             f'<h4>{escape(citation["title"])}</h4>']
     for key in ('author', 'cite'):
         if key in citation:
             lines.append(f'<p class="source-{key}">{escape(citation[key])}</p>')
@@ -299,18 +300,14 @@ def render(title, chapters):
         chapter_id = slug(chapter.title)
         chapter_title = escape(chapter.title)
         navigation.append(f'<a href="#{chapter_id}">{chapter_title}</a>')
-        rows, source_works = [], []
+        rows = []
         for work in chapter.works:
             rows.append(work_html(work, media_index, asset_url))
             if work.folder:
                 media_index += 1
-            if work.sources:
-                entries = '\n'.join(source_entry_html(*source) for source in work.sources)
-                source_works.append(f'<section class="source-work"><h4>{escape(work.name)}</h4>{entries}</section>')
+            sources.extend(source_entry_html(work.name, *source) for source in work.sources)
         sections.append(f'<section id="{chapter_id}" data-section><header class="chapter-header">'
                         f'<h2>{chapter_title}</h2></header>\n' + '\n'.join(rows) + '</section>')
-        body = '\n'.join(source_works) or '<p class="no-sources">Ebben a szekcióban nincs forrás.</p>'
-        sources.append(f'<section class="source-group" data-source-section><h3>{chapter_title}</h3>{body}</section>')
     template = Template((ROOT / 'site/index.template.html').read_text(encoding='utf-8'))
     page = template.substitute(title=escape(title), hero=hero_html(asset_url), navigation='\n'.join(navigation),
                                chapters='\n'.join(sections), sources='\n'.join(sources))

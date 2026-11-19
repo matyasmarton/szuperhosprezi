@@ -32,7 +32,18 @@
         <h2 id="source-title">Források</h2>
         <form method="dialog"><button class="ink-button" aria-label="Bezárás" autofocus>×</button></form>
       </header>
-      <div class="source-body">$sources</div>
+      <div class="source-context">
+        <h3 id="source-work"></h3>
+        <div class="source-pager" role="group" aria-label="Lapozás a források között" hidden>
+          <button type="button" class="ink-button source-prev" aria-label="Előző forrás">‹</button>
+          <span class="source-count" role="status" aria-atomic="true"></span>
+          <button type="button" class="ink-button source-next" aria-label="Következő forrás">›</button>
+        </div>
+      </div>
+      <div class="source-body" aria-labelledby="source-work" role="region" tabindex="0">
+        <p class="no-sources" hidden>Ehhez az alfejezethez nincs forrás.</p>
+        $sources
+      </div>
     </div>
   </dialog>
 </body>

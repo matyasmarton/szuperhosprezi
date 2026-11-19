@@ -2,9 +2,15 @@ const chapters = [...document.querySelectorAll('[data-section]')]
 const links = [...document.querySelectorAll('.masthead nav a')]
 const progress = document.querySelector('.progress')
 const sources = document.querySelector('#sources')
-const sourceTitle = sources.querySelector('h2')
 const sourceBody = sources.querySelector('.source-body')
-const sourceGroups = [...sourceBody.querySelectorAll('[data-source-section]')]
+const works = [...document.querySelectorAll('[data-subsection]')]
+const sourceWork = sources.querySelector('#source-work')
+const sourcePager = sources.querySelector('.source-pager')
+const sourceCount = sources.querySelector('.source-count')
+const sourceEntries = [...sourceBody.querySelectorAll('[data-source-for]')]
+const noSources = sourceBody.querySelector('.no-sources')
+const workTitles = new Map(works.map((work) => [work.id, work.querySelector('h3').textContent]))
+let sourceIndex = -1
 let activeIndex = -1
 let frame = 0
 
@@ -37,15 +43,44 @@ addEventListener('resize', scheduleScrollUpdate)
 addEventListener('pageshow', scheduleScrollUpdate)
 updateScrollState()
 
-document.querySelector('.source-tab').addEventListener('click', () => {
-  const current = activeIndex >= 0
-  sourceTitle.textContent = current ? links[activeIndex].textContent.trim() : 'Források'
-  sourceGroups.forEach((group, index) => {
-    group.hidden = current && index !== activeIndex
-    group.firstElementChild.hidden = current
-  })
-  sources.showModal()
+function showSource(index, work) {
+  sourceEntries[sourceIndex]?.setAttribute('hidden', '')
+  sourceIndex = index
+  const entry = sourceEntries[index]
+  if (entry) entry.hidden = false
+  sourceWork.textContent = workTitles.get(entry?.dataset.sourceFor ?? work?.id) ?? 'Források'
+  sourceCount.textContent = `${entry ? index + 1 : '–'} / ${sourceEntries.length}`
+  sourcePager.hidden = sourceEntries.length <= (entry ? 1 : 0)
+  noSources.hidden = Boolean(entry)
   sourceBody.scrollTop = 0
+}
+
+function cycleSource(direction) {
+  if (sourcePager.hidden) return
+  const start = sourceIndex === -1 && direction < 0 ? 0 : sourceIndex
+  showSource((start + direction + sourceEntries.length) % sourceEntries.length)
+}
+
+document.querySelector('.source-tab').addEventListener('click', () => {
+  const midpoint = innerHeight / 2
+  const work = works.find((row) => {
+    const { top, bottom } = row.getBoundingClientRect()
+    return top <= midpoint && bottom > midpoint
+  }) ?? works.find((row) => {
+    const { top, bottom } = row.getBoundingClientRect()
+    return row.closest('[data-section]') === chapters[activeIndex] && top < innerHeight && bottom > 0
+  })
+  const index = work ? sourceEntries.findIndex((entry) => entry.dataset.sourceFor === work.id) : 0
+  sources.showModal()
+  showSource(index, work)
+})
+
+sources.querySelector('.source-prev').addEventListener('click', () => cycleSource(-1))
+sources.querySelector('.source-next').addEventListener('click', () => cycleSource(1))
+sources.addEventListener('keydown', (event) => {
+  if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return
+  event.preventDefault()
+  cycleSource(event.key === 'ArrowLeft' ? -1 : 1)
 })
 
 sources.addEventListener('click', (event) => {

@@ -132,17 +132,16 @@ main { max-width: 1200px; margin: auto; padding: 3.5rem 2rem 5rem; }
 .source-tab:focus-visible { outline-color: var(--paper); outline-offset: -5px; }
 .source-sheet { position: fixed; inset: 0 0 0 auto; margin: 0; padding: 0; width: min(92vw, 540px); height: 100%; max-width: none; max-height: none; border: 0; border-left: var(--frame); background: var(--paper); color: var(--ink); }
 .source-sheet::backdrop { background: none; }
-.source-layout { display: grid; grid-template-rows: auto minmax(0, 1fr); height: 100%; }
+.source-layout { display: grid; grid-template-rows: auto auto minmax(0, 1fr); height: 100%; }
 .source-header { position: relative; padding: 1.5rem 4rem 1rem 1.5rem; border-bottom: var(--frame); }
 .source-header h2 { font-size: 1.875rem; line-height: 1.15; }
 .source-header form { position: absolute; top: 1rem; right: 1rem; }
+.source-context { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: .85rem 1.5rem; border-bottom: 1px solid var(--ink); }
+.source-context h3 { color: var(--red); font-size: 1.25rem; line-height: 1.15; overflow-wrap: anywhere; }
+.source-pager { display: flex; flex: none; align-items: center; gap: .5rem; }
+.source-count { min-width: 3em; text-align: center; font: 1rem var(--display); }
 .source-body { overflow: auto; overscroll-behavior: contain; padding: 1.5rem; font-size: .875rem; }
-.source-group + .source-group { margin-top: 2rem; }
-.source-group h3 { margin-bottom: 1rem; font-size: 1.5rem; }
-.source-work + .source-work { margin-top: 1.75rem; }
-.source-work h4 { color: var(--red); font-size: 1.125rem; }
-.source-entry { border-top: var(--frame); margin-top: 1rem; padding-top: 1rem; }
-.source-entry h5 { font-size: 1.25rem; line-height: 1.25; }
+.source-entry h4 { margin-bottom: .5rem; font-size: 1.25rem; line-height: 1.25; }
 .source-author, .source-cite, .no-sources { margin-top: .25rem; color: var(--soft); }
 .source-author, .no-sources { font-style: italic; }
 .source-entry a { display: inline-block; margin-top: .25rem; color: var(--red); overflow-wrap: anywhere; }
