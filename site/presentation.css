@@ -135,6 +135,9 @@ main { max-width: 1200px; margin: auto; padding: 3.5rem 2rem 5rem; }
 .ink-button { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; padding: 0; border: var(--frame); background: var(--paper); font-size: 1.5rem; line-height: 1; }
 .ink-button:not(:disabled):hover { background: var(--red); color: var(--paper); }
 .ink-button:disabled { color: var(--soft); border-color: var(--soft); background: #e7dfcf; cursor: default; }
+.close-button::before, .close-button::after { content: ''; grid-area: 1 / 1; width: .875rem; height: 2px; background: currentColor; }
+.close-button::before { transform: rotate(45deg); }
+.close-button::after { transform: rotate(-45deg); }
 [data-video] video, [data-video] .placeholder { aspect-ratio: 16 / 9; }
 [data-video] video { border: var(--frame); background: var(--ink); }
 .play-label { display: grid; gap: .75rem; justify-items: center; padding: .5rem; background: var(--paper); }

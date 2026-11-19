@@ -253,7 +253,7 @@ def gallery_html(images, work_id, name, image_url):
             f'<img src="{preview}" loading="lazy" alt=""><span>Galéria megnyitása · {len(numbered)} kép</span></button>'
             f'<dialog class="gallery-dialog" id="{gallery_id}" aria-labelledby="{gallery_id}-title">'
             f'<header class="dialog-header"><h2 id="{gallery_id}-title">{name} — Galéria</h2>'
-            '<form method="dialog"><button class="ink-button" aria-label="Bezárás" autofocus>×</button></form></header>'
+            '<form method="dialog"><button class="ink-button close-button" aria-label="Bezárás" autofocus></button></form></header>'
             f'<div class="gallery-images">{slides}</div>{pager}</dialog></div>')
 
 
