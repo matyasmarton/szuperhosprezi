@@ -55,7 +55,7 @@
 	* Mecha Animét Idézi
 	* [Képek beszúrva, galéria]
 * Afro Samurai
-	* Japán Manga, amerikai-japán anima (Samuel L. Jackson producer)
+	* Japán Manga, amerikai-japán anime (Samuel L. Jackson producer)
 	* Techno-Orientalizmus
 	* Afro-futurizmus
 	* [Kivágott jelenet videó beágyazva]
