@@ -201,12 +201,15 @@ def hero_html(image_url):
     ordered = [paths[0] for paths in candidates.values()]
     ordered += [path for folder in HERO_EXTRA_ORDER for path in candidates.get(folder, [])[1:]]
     clips, panels, seams = [], [], []
+    padded_source = ROOT / 'photo/dorohedoro/Dorohedoro_title2.jpg'
     for index, (points, x, y, width, height) in enumerate(HERO_WEDGES):
         clip = f'panel-{index + 1}'
         polygon = f'<polygon points="{points}"'
         clips.append(f'<clipPath id="{clip}">{polygon}/></clipPath>')
         box = f'x="{x}" y="{y}" width="{width}" height="{height}"'
         path = ordered[index] if index < len(ordered) else None
+        if path == padded_source:
+            path = padded_source.with_name('hero-panel-7-wide.jpg')
         if path:
             content = f'<image href="{image_url(path)}" {box} preserveAspectRatio="xMidYMid slice"/>'
         else:
