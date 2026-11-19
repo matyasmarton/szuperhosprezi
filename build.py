@@ -200,6 +200,11 @@ def hero_html(image_url):
         candidates[folder] = titles or [cover(images)]
     ordered = [paths[0] for paths in candidates.values()]
     ordered += [path for folder in HERO_EXTRA_ORDER for path in candidates.get(folder, [])[1:]]
+    overrides = {
+        0: ROOT / 'photo/Batman_ninja/B_Ninja_Title2.png',
+        1: ROOT / 'photo/Pluto/Pluto_Cover.webp',
+        2: ROOT / 'photo/Batman_ninja/hero-panel-3-flipped.png',
+    }
     clips, panels, seams = [], [], []
     padded_artwork = {
         'Dorohedoro_Title1.jpg': 'hero-panel-5-wide.jpg',
@@ -211,6 +216,7 @@ def hero_html(image_url):
         clips.append(f'<clipPath id="{clip}">{polygon}/></clipPath>')
         box = f'x="{x}" y="{y}" width="{width}" height="{height}"'
         path = ordered[index] if index < len(ordered) else None
+        path = overrides.get(index, path)
         if path and path.parent == ROOT / 'photo/dorohedoro' and path.name in padded_artwork:
             path = path.with_name(padded_artwork[path.name])
         if path:
@@ -236,7 +242,11 @@ def gallery_html(images, work_id, name, image_url):
         match = GALLERY_FILENAME.fullmatch(path.stem)
         if match:
             caption = unicodedata.normalize('NFC', match[2].strip())
-            numbered.append((int(match[1]), path, escape(caption)))
+            try:
+                order = int(match[1])
+            except ValueError:
+                continue
+            numbered.append((order, path, escape(caption)))
     if not numbered:
         return ('<div data-gallery>' + placeholder('KÉP HELYE')
                 + '<p class="gallery-label">Galéria — feltöltés alatt</p></div>')
