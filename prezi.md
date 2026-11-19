@@ -10,12 +10,6 @@
 	* Mitshubishi mint a világ egyik legnagyobb bankja, autógyártója, elektronikai gyártója, atomreaktor gyártója
 
 ## Előszereplős film
-* **Zebraman**
-	* Lúzer főhős
-	* Camp esztétika (Sonntag)
-	* Esztétikájában sokszor paródia
-	* Amerikai pankrációra (wrestling) emlékeztető jelenetek
-	* [Képek beszúrva, galéria]
 * **Ultraman**
 	* Gyenge
 	* Sex-appeal nélküli
@@ -46,6 +40,12 @@
 		<u>whereas Superman is strong enough to win every battle,</u>
 		<u>Ultramen, especially Ultraman Taro, often have to call for help from</u>
 		<u>home.</u>
+* **Zebraman**
+	* Lúzer főhős
+	* Camp esztétika (Sonntag)
+	* Esztétikájában sokszor paródia
+	* Amerikai pankrációra (wrestling) emlékeztető jelenetek
+	* [Képek beszúrva, galéria]
 
 
 ## Nyugati koprodukciók
