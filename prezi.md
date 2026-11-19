@@ -21,7 +21,6 @@
 	* Sex-appeal nélküli
 	* ko-operációt igényel
 	* japán-nemzeti színek
-	* [Képek beszúrva, galéria]
 		Forrás: _Tom Gill: Transformational Magic_
 		_Some Japanese super-heroes and monsters_
 

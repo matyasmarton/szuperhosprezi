@@ -97,7 +97,15 @@ main { max-width: 1200px; margin: auto; padding: 3.5rem 2rem 5rem; }
 .media-row.reverse .media-notes { grid-column: 1; grid-row: 1; }
 .cover img { aspect-ratio: 3 / 4; object-fit: cover; border: var(--frame); background: var(--ink); }
 .cover .placeholder { aspect-ratio: 3 / 4; }
-.cover:has(img)::before { content: ''; position: absolute; inset: -.5rem; z-index: -1; background-image: var(--dots); }
+.cover-art { position: relative; isolation: isolate; }
+.cover-art:has(img)::before { content: ''; position: absolute; inset: -.5rem; z-index: -1; background-image: var(--dots); }
+.cover [data-video] { margin: 0; }
+.cover-switch { display: inline-flex; justify-self: start; align-items: center; gap: .65rem; margin-bottom: .85rem; padding: .375rem .6rem; border: var(--frame); background: var(--paper); color: var(--ink); box-shadow: 3px 3px 0 var(--ink); font: 1rem var(--display); letter-spacing: .05em; }
+.cover-switch:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+.switch-track { display: flex; align-items: center; width: 2.25rem; height: 1.25rem; padding: .125rem; border: 2px solid var(--ink); background: var(--ink); }
+.switch-track::after { content: ''; width: .75rem; height: .75rem; background: var(--paper); }
+.cover-switch[aria-checked="true"] .switch-track { background: var(--red); }
+.cover-switch[aria-checked="true"] .switch-track::after { transform: translateX(.875rem); }
 .subtitle { margin-top: .5rem; color: var(--soft); font-size: 1.125rem; font-style: italic; }
 .points { list-style: none; padding: 0; margin: 1.25rem 0 0; font-size: 1.125rem; line-height: 1.625; }
 .points li { position: relative; padding-left: 1.25rem; }
@@ -118,10 +126,12 @@ main { max-width: 1200px; margin: auto; padding: 3.5rem 2rem 5rem; }
 .gallery-dialog { width: min(94vw, 1120px); max-width: none; max-height: 94dvh; padding: 0; overflow: auto; border: var(--frame); background: var(--paper); color: var(--ink); box-shadow: 6px 6px 0 var(--ink); }
 .gallery-dialog::backdrop { background: rgb(19 17 16 / 72%); }
 .gallery-images { padding: 1rem 1rem 0; }
-.gallery-slide img { height: min(60dvh, 650px); object-fit: contain; border: var(--frame); background: var(--ink); }
-.gallery-slide figcaption { padding: .65rem 0; font-size: .875rem; font-weight: 700; }
-.gallery-pager { display: flex; justify-content: center; align-items: center; gap: .75rem; padding: 0 1rem 1rem; }
-.gallery-count { min-width: 4em; text-align: center; font-variant-numeric: tabular-nums; }
+.gallery-slide { height: min(60dvh, 650px); object-fit: contain; border: var(--frame); background: var(--ink); }
+.gallery-pager { display: flex; justify-content: center; align-items: center; gap: clamp(.5rem, 2vw, 1.25rem); padding: .85rem 1rem 1rem; }
+.gallery-pager .ink-button { flex: none; }
+.gallery-caption { width: min(100%, 32rem); min-width: 0; text-align: center; overflow-wrap: anywhere; }
+.gallery-caption p { font-weight: 700; }
+.gallery-count { display: block; color: var(--soft); font-size: .75rem; font-variant-numeric: tabular-nums; }
 .ink-button { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; padding: 0; border: var(--frame); background: var(--paper); font-size: 1.5rem; line-height: 1; }
 .ink-button:not(:disabled):hover { background: var(--red); color: var(--paper); }
 .ink-button:disabled { color: var(--soft); border-color: var(--soft); background: #e7dfcf; cursor: default; }
@@ -158,6 +168,9 @@ main { max-width: 1200px; margin: auto; padding: 3.5rem 2rem 5rem; }
 .page { display: block; margin-bottom: .25rem; color: var(--red); font-size: .6875rem; font-weight: bold; letter-spacing: .1em; }
 @media (prefers-reduced-motion: no-preference) {
   .side-sheet[open] { animation: slide-in .2s ease-out; }
+  .switch-track::after { transition: transform .15s ease-out; }
+  .cover-switch[data-toggled] ~ :is(.cover-art, [data-video]):not([hidden]) { animation: media-settle .18s ease-out; }
+  @keyframes media-settle { 0% { transform: scale(.975) translateY(2px); } 65% { transform: scale(1.007); } }
   @keyframes slide-in { from { transform: translateX(100%); } }
 }
 @media (max-width: 767px) {

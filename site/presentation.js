@@ -107,9 +107,25 @@ for (const video of document.querySelectorAll('video[data-random-preview]')) {
   else video.addEventListener('loadedmetadata', showPreview, { once: true })
 }
 
+for (const toggle of document.querySelectorAll('.cover-switch')) {
+  const art = toggle.parentElement.querySelector('.cover-art')
+  const frame = document.getElementById(toggle.getAttribute('aria-controls'))
+  const video = frame.querySelector('video')
+
+  toggle.addEventListener('click', () => {
+    const showVideo = frame.hidden
+    toggle.setAttribute('aria-checked', String(showVideo))
+    toggle.dataset.toggled = ''
+    if (!showVideo) video.pause()
+    art.hidden = showVideo
+    frame.hidden = !showVideo
+  })
+}
+
 for (const dialog of document.querySelectorAll('.gallery-dialog')) {
   const trigger = document.querySelector(`[aria-controls="${dialog.id}"]`)
   const slides = [...dialog.querySelectorAll('.gallery-slide')]
+  const caption = dialog.querySelector('.gallery-caption p')
   const count = dialog.querySelector('.gallery-count')
   let selected = 0
 
@@ -117,6 +133,7 @@ for (const dialog of document.querySelectorAll('.gallery-dialog')) {
     slides[selected].hidden = true
     selected = (index + slides.length) % slides.length
     slides[selected].hidden = false
+    caption.textContent = slides[selected].alt
     if (count) count.textContent = `${selected + 1} / ${slides.length}`
   }
 

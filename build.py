@@ -239,15 +239,16 @@ def gallery_html(images, work_id, name, image_url):
     gallery_id = f'{work_id}-galeria'
     preview = image_url(numbered[0][1])
     slides = '\n'.join(
-        f'<figure class="gallery-slide" hidden><img src="{image_url(path)}" loading="lazy" alt="{caption}">'
-        f'<figcaption>{caption}</figcaption></figure>' for _, path, caption in numbered
+        f'<img class="gallery-slide" src="{image_url(path)}" loading="lazy" alt="{caption}" hidden>'
+        for _, path, caption in numbered
     )
-    pager = ''
     if len(numbered) > 1:
         pager = ('<div class="gallery-pager" role="group" aria-label="Lapozás a képek között">'
                  '<button type="button" class="ink-button gallery-prev" aria-label="Előző kép">‹</button>'
-                 '<span class="gallery-count" role="status" aria-atomic="true"></span>'
+                 '<div class="gallery-caption" aria-live="polite"><p></p><span class="gallery-count" aria-hidden="true"></span></div>'
                  '<button type="button" class="ink-button gallery-next" aria-label="Következő kép">›</button></div>')
+    else:
+        pager = '<div class="gallery-pager"><div class="gallery-caption"><p></p></div></div>'
     return (f'<div data-gallery><button type="button" class="gallery-trigger" aria-haspopup="dialog" aria-controls="{gallery_id}">'
             f'<img src="{preview}" loading="lazy" alt=""><span>Galéria megnyitása · {len(numbered)} kép</span></button>'
             f'<dialog class="gallery-dialog" id="{gallery_id}" aria-labelledby="{gallery_id}-title">'
@@ -269,24 +270,34 @@ def work_html(work, media_index, asset_url):
         return (f'<article data-subsection class="text-panel" id="{work_id}">{title}'
                 f'{point_list or placeholder("SZÖVEG HELYE")}</article>')
     images = assets('photo', PHOTO_FOLDERS.get(work.folder, work.folder), IMAGE_EXTENSIONS)
-    poster = cover(images)
-    poster_url = asset_url(poster) if poster else ''
-    cover_markup = (f'<img src="{poster_url}" loading="lazy" alt="{name} — borító">'
-                    if poster else placeholder('BORÍTÓ HELYE'))
+    cover_image = cover(images)
+    cover_markup = (f'<img src="{asset_url(cover_image)}" loading="lazy" alt="{name} — borító">'
+                    if cover_image else placeholder('BORÍTÓ HELYE'))
+    cover_markup = f'<div class="cover-art">{cover_markup}</div>'
+    cover_switch = cover_video = ''
     subtitle = f'<p class="subtitle">{inlines(work.subtitle)}</p>' if work.subtitle else ''
     gallery = gallery_html(images, work_id, name, asset_url) if work.gallery else ''
     video = ''
     if work.video:
         clip = next((path for path in assets('video', work.folder, VIDEO_EXTENSIONS) if 'original' not in path.stem.lower()), None)
         if clip:
-            preview = ' data-random-preview' if work.folder == 'dorohedoro' else f' poster="{poster_url}"' if poster else ''
-            video = (f'<video aria-label="{name} — jelenet" controls playsinline preload="metadata" '
-                     f'src="{asset_url(clip)}"{preview}></video>')
+            video = (f'<video aria-label="{name} — jelenet" controls playsinline preload="metadata" data-random-preview '
+                     f'src="{asset_url(clip)}"></video>')
         else:
             video = '<div class="placeholder"><span class="play-label">VIDEÓ HELYE</span></div>'
-        video = f'<div data-video>{video}</div>'
+        if clip and work.folder == 'dorohedoro':
+            frame_id = f'{work_id}-media'
+            cover_switch = (
+                f'<button type="button" class="cover-switch" role="switch" aria-checked="false" aria-controls="{frame_id}">'
+                '<span class="switch-track" aria-hidden="true"></span><span>Videó mutatása</span></button>'
+            )
+            cover_video = f'<div data-video id="{frame_id}" hidden>{video}</div>'
+            video = ''
+        else:
+            video = f'<div data-video>{video}</div>'
     align = ' reverse' if media_index % 2 else ''
-    return (f'<article data-subsection class="media-row{align}" id="{work_id}"><figure class="cover" data-cover>{cover_markup}</figure>'
+    return (f'<article data-subsection class="media-row{align}" id="{work_id}">'
+            f'<div class="cover" data-cover>{cover_switch}{cover_markup}{cover_video}</div>'
             '<div class="media-notes">'
             f'{title}{subtitle}{point_list}{gallery}{video}</div></article>')
 
