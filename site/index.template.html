@@ -25,10 +25,24 @@
     <div class="progress" aria-hidden="true"></div>
   </header>
   <main>$chapters</main>
-  <button class="source-tab" type="button" aria-haspopup="dialog" aria-controls="sources">Forrás</button>
-  <dialog class="source-sheet" id="sources" aria-labelledby="source-title">
-    <div class="source-layout">
-      <header class="source-header">
+  <div class="side-tabs">
+    <button class="side-tab" type="button" aria-haspopup="dialog" aria-controls="background">Előzmény</button>
+    <button class="side-tab" type="button" aria-haspopup="dialog" aria-controls="sources">Forrás</button>
+  </div>
+  <dialog class="side-sheet" id="background" aria-labelledby="background-title">
+    <div class="side-layout">
+      <header class="dialog-header">
+        <h2 id="background-title">Háttér és előzmény</h2>
+        <form method="dialog"><button class="ink-button" aria-label="Bezárás" autofocus>×</button></form>
+      </header>
+      <div class="sheet-body background-body" aria-labelledby="background-title" role="region" tabindex="0">
+        $background
+      </div>
+    </div>
+  </dialog>
+  <dialog class="side-sheet" id="sources" aria-labelledby="source-title">
+    <div class="side-layout">
+      <header class="dialog-header">
         <h2 id="source-title">Források</h2>
         <form method="dialog"><button class="ink-button" aria-label="Bezárás" autofocus>×</button></form>
       </header>
@@ -40,7 +54,7 @@
           <button type="button" class="ink-button source-next" aria-label="Következő forrás">›</button>
         </div>
       </div>
-      <div class="source-body" aria-labelledby="source-work" role="region" tabindex="0">
+      <div class="sheet-body source-body" aria-labelledby="source-work" role="region" tabindex="0">
         <p class="no-sources" hidden>Ehhez az alfejezethez nincs forrás.</p>
         $sources
       </div>

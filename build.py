@@ -16,6 +16,8 @@ FOLDERS = {
     'afro-samurai': 'afro_samurai', 'cyberpunk-edgerunners': 'edgerunners', 'pluto': 'pluto',
     'monster': 'monster', 'dorohedoro': 'dorohedoro', 'neon-genesis-evangelion': 'evangelion',
 }
+PHOTO_FOLDERS = {'ultraman': 'Ultraman', 'pluto': 'Pluto'}
+GALLERY_FILENAME = re.compile(r'(\d+)\s*-\s*(.+)')
 BIBLIOGRAPHY = {
     'ultraman': [dict(title='Transformational Magic: Some Japanese super-heroes and monsters', author='Tom Gill')],
     'afro_samurai': [dict(title='Afro-Samurai: techno-Orientalism and contemporary hip-hop', author='Ken McLeod',
@@ -33,6 +35,7 @@ BIBLIOGRAPHY = {
 IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.webp', '.avif'}
 VIDEO_EXTENSIONS = {'.mp4', '.webm', '.mov'}
 HERO_ORDER = ('Batman_ninja', 'afro_samurai', 'edgerunners', 'monster', 'dorohedoro', 'evangelion')
+HERO_EXTRA_ORDER = ('dorohedoro', 'evangelion')
 HERO_WEDGES = (
     ('0,0 500,0 655,320 430,320 0,205', 0, 0, 655, 320),
     ('500,0 1010,0 880,320 655,320', 500, 0, 510, 320),
@@ -186,16 +189,17 @@ def assets(directory, folder, extensions):
 
 
 def cover(images):
-    return next((path for path in images if 'cover' in path.stem.lower()), None)
+    return next((path for path in images if 'cover' in path.stem.lower() and not GALLERY_FILENAME.fullmatch(path.stem)), None)
 
 
 def hero_html(image_url):
-    candidates = []
+    candidates = {}
     for folder in HERO_ORDER:
         images = assets('photo', folder, IMAGE_EXTENSIONS)
-        titles = [path for path in images if 'title' in path.stem.lower()]
-        candidates.append(titles or [cover(images)])
-    ordered = [paths[0] for paths in candidates] + [path for paths in candidates for path in paths[1:]]
+        titles = [path for path in images if 'title' in path.stem.lower() and not GALLERY_FILENAME.fullmatch(path.stem)]
+        candidates[folder] = titles or [cover(images)]
+    ordered = [paths[0] for paths in candidates.values()]
+    ordered += [path for folder in HERO_EXTRA_ORDER for path in candidates.get(folder, [])[1:]]
     clips, panels, seams = [], [], []
     for index, (points, x, y, width, height) in enumerate(HERO_WEDGES):
         clip = f'panel-{index + 1}'
@@ -220,19 +224,36 @@ def placeholder(label):
     return f'<div class="placeholder"><span class="placeholder-label">{label}</span></div>'
 
 
-def gallery_html(images, name, image_url):
-    slides = [f'<div class="gallery-slide"><img src="{image_url(path)}" loading="lazy" alt="{name} — {i + 1}. kép"></div>'
-              for i, path in enumerate(images)]
-    if not slides:
-        slides = [f'<div class="gallery-slide placeholder"><span class="slide-number">{i}/3</span>'
-                  '<span class="placeholder-label">KÉP HELYE</span></div>' for i in range(1, 4)]
-    controls = ''
-    if len(slides) > 1:
-        controls = ('<button type="button" class="ink-button gallery-prev" aria-label="Előző kép" disabled>‹</button>'
-                    '<button type="button" class="ink-button gallery-next" aria-label="Következő kép">›</button>')
-    caption = 'Galéria' if images else 'Galéria — feltöltés alatt'
-    return (f'<figure data-gallery aria-label="{name} — galéria"><div class="gallery-frame">'
-            f'<div class="gallery-track">{"".join(slides)}</div>{controls}</div><figcaption>{caption}</figcaption></figure>')
+def gallery_html(images, work_id, name, image_url):
+    numbered = []
+    for path in images:
+        match = GALLERY_FILENAME.fullmatch(path.stem)
+        if match:
+            caption = unicodedata.normalize('NFC', match[2].strip())
+            numbered.append((int(match[1]), path, escape(caption)))
+    if not numbered:
+        return ('<div data-gallery>' + placeholder('KÉP HELYE')
+                + '<p class="gallery-label">Galéria — feltöltés alatt</p></div>')
+
+    numbered.sort()
+    gallery_id = f'{work_id}-galeria'
+    preview = image_url(numbered[0][1])
+    slides = '\n'.join(
+        f'<figure class="gallery-slide" hidden><img src="{image_url(path)}" loading="lazy" alt="{caption}">'
+        f'<figcaption>{caption}</figcaption></figure>' for _, path, caption in numbered
+    )
+    pager = ''
+    if len(numbered) > 1:
+        pager = ('<div class="gallery-pager" role="group" aria-label="Lapozás a képek között">'
+                 '<button type="button" class="ink-button gallery-prev" aria-label="Előző kép">‹</button>'
+                 '<span class="gallery-count" role="status" aria-atomic="true"></span>'
+                 '<button type="button" class="ink-button gallery-next" aria-label="Következő kép">›</button></div>')
+    return (f'<div data-gallery><button type="button" class="gallery-trigger" aria-haspopup="dialog" aria-controls="{gallery_id}">'
+            f'<img src="{preview}" loading="lazy" alt=""><span>Galéria megnyitása · {len(numbered)} kép</span></button>'
+            f'<dialog class="gallery-dialog" id="{gallery_id}" aria-labelledby="{gallery_id}-title">'
+            f'<header class="dialog-header"><h2 id="{gallery_id}-title">{name} — Galéria</h2>'
+            '<form method="dialog"><button class="ink-button" aria-label="Bezárás" autofocus>×</button></form></header>'
+            f'<div class="gallery-images">{slides}</div>{pager}</dialog></div>')
 
 
 def work_html(work, media_index, asset_url):
@@ -247,14 +268,13 @@ def work_html(work, media_index, asset_url):
     if not work.folder:
         return (f'<article data-subsection class="text-panel" id="{work_id}">{title}'
                 f'{point_list or placeholder("SZÖVEG HELYE")}</article>')
-    images = assets('photo', work.folder, IMAGE_EXTENSIONS)
+    images = assets('photo', PHOTO_FOLDERS.get(work.folder, work.folder), IMAGE_EXTENSIONS)
     poster = cover(images)
     poster_url = asset_url(poster) if poster else ''
     cover_markup = (f'<img src="{poster_url}" loading="lazy" alt="{name} — borító">'
                     if poster else placeholder('BORÍTÓ HELYE'))
     subtitle = f'<p class="subtitle">{inlines(work.subtitle)}</p>' if work.subtitle else ''
-    gallery = gallery_html([path for path in images if 'cover' not in path.stem.lower() and 'title' not in path.stem.lower()],
-                           name, asset_url) if work.gallery else ''
+    gallery = gallery_html(images, work_id, name, asset_url) if work.gallery else ''
     video = ''
     if work.video:
         clip = next((path for path in assets('video', work.folder, VIDEO_EXTENSIONS) if 'original' not in path.stem.lower()), None)
@@ -291,13 +311,18 @@ def render(title, chapters):
     def asset_url(path):
         relative = path.relative_to(ROOT)
         used_assets.add(relative)
-        return quote(relative.as_posix())
+        # Git checks out NFC filenames on Linux; macOS accepts both forms.
+        return quote(unicodedata.normalize('NFC', relative.as_posix()))
 
     navigation, sections, sources = [], [], []
+    background = ''
     media_index = 0
     for chapter in chapters:
         chapter_id = slug(chapter.title)
         chapter_title = escape(chapter.title)
+        if chapter_id == 'hatter-es-elozmeny':
+            background = '\n'.join(work_html(work, 0, asset_url) for work in chapter.works)
+            continue
         navigation.append(f'<a href="#{chapter_id}">{chapter_title}</a>')
         rows = []
         for work in chapter.works:
@@ -311,7 +336,7 @@ def render(title, chapters):
                         f'<h2>{chapter_title}</h2></header>\n' + '\n'.join(rows) + '</section>')
     template = Template((ROOT / 'site/index.template.html').read_text(encoding='utf-8'))
     page = template.substitute(title=escape(title), hero=hero_html(asset_url), navigation='\n'.join(navigation),
-                               chapters='\n'.join(sections), sources='\n'.join(sources))
+                               chapters='\n'.join(sections), sources='\n'.join(sources), background=background)
     return page, used_assets
 
 
@@ -333,7 +358,7 @@ def main():
             if target.exists():
                 shutil.rmtree(target)
             for relative in sorted(files):
-                dest = target / relative
+                dest = target / unicodedata.normalize('NFC', relative.as_posix())
                 dest.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(ROOT / relative, dest)
         except OSError as error:

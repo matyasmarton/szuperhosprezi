@@ -3,7 +3,7 @@ const links = [...document.querySelectorAll('.masthead nav a')]
 const progress = document.querySelector('.progress')
 const sources = document.querySelector('#sources')
 const sourceBody = sources.querySelector('.source-body')
-const works = [...document.querySelectorAll('[data-subsection]')]
+const works = [...document.querySelectorAll('main [data-subsection]')]
 const sourceWork = sources.querySelector('#source-work')
 const sourcePager = sources.querySelector('.source-pager')
 const sourceCount = sources.querySelector('.source-count')
@@ -61,7 +61,7 @@ function cycleSource(direction) {
   showSource((start + direction + sourceSlides.length) % sourceSlides.length)
 }
 
-document.querySelector('.source-tab').addEventListener('click', () => {
+document.querySelector('[aria-controls="sources"]').addEventListener('click', () => {
   const midpoint = innerHeight / 2
   const work = works.find((row) => {
     const { top, bottom } = row.getBoundingClientRect()
@@ -83,9 +83,14 @@ sources.addEventListener('keydown', (event) => {
   cycleSource(event.key === 'ArrowLeft' ? -1 : 1)
 })
 
-sources.addEventListener('click', (event) => {
-  if (event.target === sources) sources.close()
-})
+const background = document.querySelector('#background')
+document.querySelector('[aria-controls="background"]').addEventListener('click', () => background.showModal())
+
+for (const dialog of document.querySelectorAll('dialog')) {
+  dialog.addEventListener('click', (event) => {
+    if (event.target === dialog) dialog.close()
+  })
+}
 
 for (const video of document.querySelectorAll('video[data-random-preview]')) {
   const showPreview = () => {
@@ -102,36 +107,28 @@ for (const video of document.querySelectorAll('video[data-random-preview]')) {
   else video.addEventListener('loadedmetadata', showPreview, { once: true })
 }
 
-for (const gallery of document.querySelectorAll('[data-gallery]')) {
-  const track = gallery.querySelector('.gallery-track')
-  const previous = gallery.querySelector('.gallery-prev')
-  const next = gallery.querySelector('.gallery-next')
-  if (!previous || !next) continue
-  const slides = track.children
+for (const dialog of document.querySelectorAll('.gallery-dialog')) {
+  const trigger = document.querySelector(`[aria-controls="${dialog.id}"]`)
+  const slides = [...dialog.querySelectorAll('.gallery-slide')]
+  const count = dialog.querySelector('.gallery-count')
   let selected = 0
 
-  function goTo(index) {
-    selected = Math.max(0, Math.min(slides.length - 1, index))
-    track.scrollTo({
-      left: slides[selected].offsetLeft,
-      behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
-    })
+  function showImage(index) {
+    slides[selected].hidden = true
+    selected = (index + slides.length) % slides.length
+    slides[selected].hidden = false
+    if (count) count.textContent = `${selected + 1} / ${slides.length}`
   }
 
-  function updateGallery() {
-    if (!track.clientWidth) return
-    selected = Math.round(track.scrollLeft / track.clientWidth)
-    previous.disabled = selected === 0
-    next.disabled = selected >= slides.length - 1
-  }
-
-  track.addEventListener('scroll', updateGallery, { passive: true })
-  previous.addEventListener('click', () => goTo(selected - 1))
-  next.addEventListener('click', () => goTo(selected + 1))
-  gallery.addEventListener('keydown', (event) => {
+  trigger.addEventListener('click', () => {
+    showImage(0)
+    dialog.showModal()
+  })
+  dialog.querySelector('.gallery-prev')?.addEventListener('click', () => showImage(selected - 1))
+  dialog.querySelector('.gallery-next')?.addEventListener('click', () => showImage(selected + 1))
+  dialog.addEventListener('keydown', (event) => {
     if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return
     event.preventDefault()
-    goTo(selected + (event.key === 'ArrowLeft' ? -1 : 1))
+    showImage(selected + (event.key === 'ArrowLeft' ? -1 : 1))
   })
-  updateGallery()
 }
