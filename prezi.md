@@ -19,8 +19,8 @@
 * **Ultraman**
 	* Gyenge
 	* Sex-appeal nélküli
-	* ko-operációt igényel
-	* japán-nemzeti színek
+	* Ko-operációt igényel
+	* Japán-nemzeti színek
 		Forrás: _Tom Gill: Transformational Magic_
 		_Some Japanese super-heroes and monsters_
 
@@ -51,7 +51,7 @@
 ## Nyugati koprodukciók
 * **Batman Ninja**
 	* Alternatív Japán történelmi környezet
-	* kevert múlt-jövő technológia
+	* Kevert múlt-jövő technológia
 	* Mecha Animét Idézi
 	* [Képek beszúrva, galéria]
 * Afro Samurai
@@ -110,7 +110,7 @@
 
 * **Monster**
 	* Batman - Joker dinamika Tenma és Johan között
-	* valódi szuperképesség nincs, de Tenma intellektusa, hite, akarata emberfeletti
+	* Valódi szuperképesség nincs, de Tenma intellektusa, hite, akarata emberfeletti
 	* Johan Jokerre hasonlító őrült sorozatgyilkos aki folyamatosan próbára teszi Tenmát
 	* **Tenma nem a rendfenntartás eszköze, mint Batman. Körözik, üldözik, menekül**
 	* [Kivágott jelenet videó beágyazva]
@@ -138,7 +138,7 @@
 	* A közösséget érintő fenyegetés a cselekmény kb 2/3-ig nem egyértelmű (képregény első TÍZ éve)
 	* Legerősebb státuszt nem kiváltság, vagy "edzés" (_training arc_) nyújtja, egy vizsgát kell letenni
 	* Nincs evidens morális jó 
-	* A hősök önző motiváció a cselekmény 2/3-ig változatlanok
+	* A hősök önző motivációi a cselekmény 2/3-ig változatlanok
 	* Nehezen értelmezhető cselekmény
 	* Átlagtól erőszakosabb, de kevésbé szexualizált
 	* [Kivágott jelenet videó beágyazva]
