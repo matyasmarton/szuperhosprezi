@@ -38,7 +38,7 @@ HERO_ORDER = ('Batman_ninja', 'afro_samurai', 'edgerunners', 'monster', 'dorohed
 HERO_EXTRA_ORDER = ('dorohedoro', 'evangelion')
 HERO_WEDGES = (
     ('0,0 500,0 655,320 430,320 0,205', 0, 0, 655, 320),
-    ('500,0 1010,0 880,320 655,320', 500, 0, 510, 320),
+    ('500,0 1010,0 880,320 655,320', 500, 0, 510, 384),
     ('1010,0 1600,0 1600,290 1170,320 880,320', 880, 0, 720, 320),
     ('1600,290 1600,650 1170,570 1170,320', 1170, 290, 430, 360),
     ('1600,650 1600,900 1030,900 900,570 1170,570', 900, 504, 700, 396),
@@ -202,7 +202,7 @@ def hero_html(image_url):
     ordered += [path for folder in HERO_EXTRA_ORDER for path in candidates.get(folder, [])[1:]]
     overrides = {
         0: ROOT / 'photo/Batman_ninja/B_Ninja_Title2.png',
-        1: ROOT / 'photo/Pluto/Pluto_Cover.webp',
+        1: ROOT / 'photo/Pluto/hero-panel-2-wide.jpg',
         2: ROOT / 'photo/Batman_ninja/hero-panel-3-flipped.png',
     }
     clips, panels, seams = [], [], []
