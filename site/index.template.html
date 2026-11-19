@@ -1,0 +1,41 @@
+<!doctype html>
+<!-- Generated from prezi.md by build.py. -->
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23C4161C' d='M0 0h32v32H0z'/%3E%3Cpath fill='%23F3EDE1' d='M18 3 7 19h8l-2 10 12-17h-9z'/%3E%3C/svg%3E">
+  <title>$title</title>
+  <link rel="stylesheet" href="site/presentation.css">
+  <script defer src="site/presentation.js"></script>
+</head>
+<body>
+  <div class="hero" id="eleje">
+    $hero
+    <div class="hero-tone halftone" aria-hidden="true"></div>
+    <div class="title-card">
+      <div class="issue" lang="ja" aria-hidden="true">第一号</div>
+      <h1>$title</h1>
+    </div>
+  </div>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <a class="brand" href="#eleje">SZUPERHŐSÖK</a>
+      <nav aria-label="Fejezetek">$navigation</nav>
+    </div>
+    <div class="progress" aria-hidden="true"></div>
+  </header>
+  <main>$chapters</main>
+  <button class="source-tab" type="button" aria-haspopup="dialog" aria-controls="sources">Forrás</button>
+  <dialog class="source-sheet" id="sources" aria-labelledby="source-title">
+    <div class="source-layout">
+      <header class="source-header">
+        <span class="chapter-number" lang="ja" aria-hidden="true" hidden></span>
+        <h2 id="source-title">Források</h2>
+        <form method="dialog"><button class="ink-button" aria-label="Bezárás" autofocus>×</button></form>
+      </header>
+      <div class="source-body">$sources</div>
+    </div>
+  </dialog>
+</body>
+</html>
