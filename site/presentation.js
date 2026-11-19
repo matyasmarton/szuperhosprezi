@@ -3,7 +3,6 @@ const links = [...document.querySelectorAll('.masthead nav a')]
 const progress = document.querySelector('.progress')
 const sources = document.querySelector('#sources')
 const sourceTitle = sources.querySelector('h2')
-const sourceNumber = sources.querySelector('.chapter-number')
 const sourceBody = sources.querySelector('.source-body')
 const sourceGroups = [...sourceBody.querySelectorAll('[data-source-section]')]
 let activeIndex = -1
@@ -41,8 +40,6 @@ updateScrollState()
 document.querySelector('.source-tab').addEventListener('click', () => {
   const current = activeIndex >= 0
   sourceTitle.textContent = current ? links[activeIndex].textContent.trim() : 'Források'
-  sourceNumber.textContent = current ? chapters[activeIndex].querySelector('.chapter-number').textContent : ''
-  sourceNumber.hidden = !current
   sourceGroups.forEach((group, index) => {
     group.hidden = current && index !== activeIndex
     group.firstElementChild.hidden = current
@@ -54,6 +51,21 @@ document.querySelector('.source-tab').addEventListener('click', () => {
 sources.addEventListener('click', (event) => {
   if (event.target === sources) sources.close()
 })
+
+for (const video of document.querySelectorAll('video[data-random-preview]')) {
+  const showPreview = () => {
+    if (!video.paused || video.currentTime !== 0 || !Number.isFinite(video.duration)) return
+    // Sample the clip itself; leave the opening and closing seconds out of the preview.
+    const previewTime = video.duration * (0.1 + Math.random() * 0.8)
+    video.currentTime = previewTime
+    video.addEventListener('play', () => {
+      // Play from the beginning unless the viewer has already scrubbed elsewhere.
+      if (Math.abs(video.currentTime - previewTime) < 0.25) video.currentTime = 0
+    }, { once: true })
+  }
+  if (video.readyState >= HTMLMediaElement.HAVE_METADATA) showPreview()
+  else video.addEventListener('loadedmetadata', showPreview, { once: true })
+}
 
 for (const gallery of document.querySelectorAll('[data-gallery]')) {
   const track = gallery.querySelector('.gallery-track')

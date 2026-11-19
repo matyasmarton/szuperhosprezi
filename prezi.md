@@ -143,7 +143,6 @@
 	* Nehezen értelmezhető cselekmény
 	* Átlagtól erőszakosabb, de kevésbé szexualizált
 	* [Kivágott jelenet videó beágyazva]
-	* [Képek beszúrva, galéria]
 		Forrás: Maturing Manga: An Analysis of Adult Themes in Shonen Manga
 		Audrey Leahy 
 		[https://digitalcommons.georgiasouthern.edu/cgi/viewcontent.cgi?article=1918&context=honors-theses](https://digitalcommons.georgiasouthern.edu/cgi/viewcontent.cgi?article=1918&context=honors-theses)

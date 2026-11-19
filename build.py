@@ -30,7 +30,6 @@ BIBLIOGRAPHY = {
     'evangelion': [dict(title='When the Machines Stop: Fantasy, Reality, and Terminal Identity in ”Neon Genesis Evangelion“ and ”Serial Experiments Lain“',
                         url='https://www.jstor.org/stable/4241108')],
 }
-NUMERALS = '一二三四五六七八九'
 IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.webp', '.avif'}
 VIDEO_EXTENSIONS = {'.mp4', '.webm', '.mov'}
 HERO_ORDER = ('Batman_ninja', 'afro_samurai', 'edgerunners', 'monster', 'dorohedoro', 'evangelion')
@@ -190,10 +189,6 @@ def cover(images):
     return next((path for path in images if 'cover' in path.stem.lower()), None)
 
 
-def numbered(index):
-    return NUMERALS[index] if index < len(NUMERALS) else str(index + 1)
-
-
 def hero_html(image_url):
     candidates = []
     for folder in HERO_ORDER:
@@ -264,15 +259,15 @@ def work_html(work, media_index, asset_url):
     if work.video:
         clip = next((path for path in assets('video', work.folder, VIDEO_EXTENSIONS) if 'original' not in path.stem.lower()), None)
         if clip:
-            poster_attr = f' poster="{poster_url}"' if poster else ''
+            preview = ' data-random-preview' if work.folder == 'dorohedoro' else f' poster="{poster_url}"' if poster else ''
             video = (f'<video aria-label="{name} — jelenet" controls playsinline preload="metadata" '
-                     f'src="{asset_url(clip)}"{poster_attr}></video>')
+                     f'src="{asset_url(clip)}"{preview}></video>')
         else:
             video = '<div class="placeholder"><span class="play-label">VIDEÓ HELYE</span></div>'
         video = f'<div data-video>{video}</div>'
     align = ' reverse' if media_index % 2 else ''
     return (f'<article data-subsection class="media-row{align}" id="{work_id}"><figure class="cover" data-cover>{cover_markup}</figure>'
-            f'<div class="media-notes"><span class="issue-number" lang="ja" aria-hidden="true">第{numbered(media_index)}話</span>'
+            '<div class="media-notes">'
             f'{title}{subtitle}{point_list}{gallery}{video}</div></article>')
 
 
@@ -300,7 +295,7 @@ def render(title, chapters):
 
     navigation, sections, sources = [], [], []
     media_index = 0
-    for index, chapter in enumerate(chapters):
+    for chapter in chapters:
         chapter_id = slug(chapter.title)
         chapter_title = escape(chapter.title)
         navigation.append(f'<a href="#{chapter_id}">{chapter_title}</a>')
@@ -313,7 +308,6 @@ def render(title, chapters):
                 entries = '\n'.join(source_entry_html(*source) for source in work.sources)
                 source_works.append(f'<section class="source-work"><h4>{escape(work.name)}</h4>{entries}</section>')
         sections.append(f'<section id="{chapter_id}" data-section><header class="chapter-header">'
-                        f'<span class="chapter-number" lang="ja" aria-hidden="true">第{numbered(index)}章</span>'
                         f'<h2>{chapter_title}</h2></header>\n' + '\n'.join(rows) + '</section>')
         body = '\n'.join(source_works) or '<p class="no-sources">Ebben a szekcióban nincs forrás.</p>'
         sources.append(f'<section class="source-group" data-source-section><h3>{chapter_title}</h3>{body}</section>')
