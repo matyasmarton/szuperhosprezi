@@ -271,9 +271,8 @@ def work_html(work, media_index, asset_url):
             f'{title}{subtitle}{point_list}{gallery}{video}</div></article>')
 
 
-def source_entry_html(work, citation, paragraphs):
-    lines = [f'<article class="source-entry" data-source-for="{slug(work)}" hidden>'
-             f'<h4>{escape(citation["title"])}</h4>']
+def source_entry_html(citation, paragraphs):
+    lines = [f'<article class="source-entry"><h4>{escape(citation["title"])}</h4>']
     for key in ('author', 'cite'):
         if key in citation:
             lines.append(f'<p class="source-{key}">{escape(citation[key])}</p>')
@@ -305,7 +304,9 @@ def render(title, chapters):
             rows.append(work_html(work, media_index, asset_url))
             if work.folder:
                 media_index += 1
-            sources.extend(source_entry_html(work.name, *source) for source in work.sources)
+            if work.sources:
+                entries = '\n'.join(source_entry_html(*source) for source in work.sources)
+                sources.append(f'<div data-source-for="{slug(work.name)}" hidden>\n{entries}\n</div>')
         sections.append(f'<section id="{chapter_id}" data-section><header class="chapter-header">'
                         f'<h2>{chapter_title}</h2></header>\n' + '\n'.join(rows) + '</section>')
     template = Template((ROOT / 'site/index.template.html').read_text(encoding='utf-8'))

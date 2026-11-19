@@ -139,8 +139,9 @@ main { max-width: 1200px; margin: auto; padding: 3.5rem 2rem 5rem; }
 .source-context { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: .85rem 1.5rem; border-bottom: 1px solid var(--ink); }
 .source-context h3 { color: var(--red); font-size: 1.25rem; line-height: 1.15; overflow-wrap: anywhere; }
 .source-pager { display: flex; flex: none; align-items: center; gap: .5rem; }
-.source-count { min-width: 3em; text-align: center; font: 1rem var(--display); }
+.source-count { min-width: 3em; text-align: center; font-size: .875rem; font-weight: 700; font-variant-numeric: tabular-nums; }
 .source-body { overflow: auto; overscroll-behavior: contain; padding: 1.5rem; font-size: .875rem; }
+.source-entry + .source-entry { margin-top: 2rem; padding-top: 1.5rem; border-top: var(--frame); }
 .source-entry h4 { margin-bottom: .5rem; font-size: 1.25rem; line-height: 1.25; }
 .source-author, .source-cite, .no-sources { margin-top: .25rem; color: var(--soft); }
 .source-author, .no-sources { font-style: italic; }

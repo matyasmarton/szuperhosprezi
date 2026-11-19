@@ -7,7 +7,7 @@ const works = [...document.querySelectorAll('[data-subsection]')]
 const sourceWork = sources.querySelector('#source-work')
 const sourcePager = sources.querySelector('.source-pager')
 const sourceCount = sources.querySelector('.source-count')
-const sourceEntries = [...sourceBody.querySelectorAll('[data-source-for]')]
+const sourceSlides = [...sourceBody.querySelectorAll('[data-source-for]')]
 const noSources = sourceBody.querySelector('.no-sources')
 const workTitles = new Map(works.map((work) => [work.id, work.querySelector('h3').textContent]))
 let sourceIndex = -1
@@ -44,21 +44,21 @@ addEventListener('pageshow', scheduleScrollUpdate)
 updateScrollState()
 
 function showSource(index, work) {
-  sourceEntries[sourceIndex]?.setAttribute('hidden', '')
+  if (sourceSlides[sourceIndex]) sourceSlides[sourceIndex].hidden = true
   sourceIndex = index
-  const entry = sourceEntries[index]
-  if (entry) entry.hidden = false
-  sourceWork.textContent = workTitles.get(entry?.dataset.sourceFor ?? work?.id) ?? 'Források'
-  sourceCount.textContent = `${entry ? index + 1 : '–'} / ${sourceEntries.length}`
-  sourcePager.hidden = sourceEntries.length <= (entry ? 1 : 0)
-  noSources.hidden = Boolean(entry)
+  const slide = sourceSlides[index]
+  if (slide) slide.hidden = false
+  sourceWork.textContent = workTitles.get(slide?.dataset.sourceFor ?? work?.id) ?? 'Források'
+  sourceCount.textContent = `${slide ? index + 1 : '–'} / ${sourceSlides.length}`
+  sourcePager.hidden = sourceSlides.length <= (slide ? 1 : 0)
+  noSources.hidden = Boolean(slide)
   sourceBody.scrollTop = 0
 }
 
 function cycleSource(direction) {
   if (sourcePager.hidden) return
   const start = sourceIndex === -1 && direction < 0 ? 0 : sourceIndex
-  showSource((start + direction + sourceEntries.length) % sourceEntries.length)
+  showSource((start + direction + sourceSlides.length) % sourceSlides.length)
 }
 
 document.querySelector('.source-tab').addEventListener('click', () => {
@@ -70,7 +70,7 @@ document.querySelector('.source-tab').addEventListener('click', () => {
     const { top, bottom } = row.getBoundingClientRect()
     return row.closest('[data-section]') === chapters[activeIndex] && top < innerHeight && bottom > 0
   })
-  const index = work ? sourceEntries.findIndex((entry) => entry.dataset.sourceFor === work.id) : 0
+  const index = work ? sourceSlides.findIndex((slide) => slide.dataset.sourceFor === work.id) : 0
   sources.showModal()
   showSource(index, work)
 })
