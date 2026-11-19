@@ -74,7 +74,7 @@ img, video { display: block; width: 100%; }
   padding: 1.75rem 2rem; border: 4px solid var(--ink); background: var(--paper);
   box-shadow: 8px 8px 0 var(--ink); text-align: center;
 }
-.title-card h1 { max-width: 748px; align-self: center; font-size: clamp(1.6rem, 3.2vw, 3.2rem); line-height: .95; text-wrap: balance; }
+.title-card h1 { max-width: 748px; align-self: center; font-size: clamp(1.6rem, 3.2vw, 3.2rem); line-height: 1.08; text-wrap: balance; }
 .title-card::after { content: ''; align-self: center; width: 4rem; height: 3px; margin-top: 1.25rem; background: var(--red); }
 
 .masthead { position: sticky; top: 0; z-index: 2; border-bottom: var(--frame); background: var(--paper); }
