@@ -41,7 +41,7 @@ HERO_WEDGES = (
     ('500,0 1010,0 880,320 655,320', 500, 0, 510, 320),
     ('1010,0 1600,0 1600,290 1170,320 880,320', 880, 0, 720, 320),
     ('1600,290 1600,650 1170,570 1170,320', 1170, 290, 430, 360),
-    ('1600,650 1600,900 1030,900 900,570 1170,570', 900, 570, 700, 330),
+    ('1600,650 1600,900 1030,900 900,570 1170,570', 900, 504, 700, 396),
     ('1030,900 560,900 650,570 900,570', 560, 570, 470, 330),
     ('560,900 0,900 0,640 430,570 650,570', 0, 504, 650, 396),
     ('0,640 0,205 430,320 430,570', 0, 205, 430, 435),
@@ -201,15 +201,18 @@ def hero_html(image_url):
     ordered = [paths[0] for paths in candidates.values()]
     ordered += [path for folder in HERO_EXTRA_ORDER for path in candidates.get(folder, [])[1:]]
     clips, panels, seams = [], [], []
-    padded_source = ROOT / 'photo/dorohedoro/Dorohedoro_title2.jpg'
+    padded_artwork = {
+        'Dorohedoro_Title1.jpg': 'hero-panel-5-wide.jpg',
+        'Dorohedoro_title2.jpg': 'hero-panel-7-wide.jpg',
+    }
     for index, (points, x, y, width, height) in enumerate(HERO_WEDGES):
         clip = f'panel-{index + 1}'
         polygon = f'<polygon points="{points}"'
         clips.append(f'<clipPath id="{clip}">{polygon}/></clipPath>')
         box = f'x="{x}" y="{y}" width="{width}" height="{height}"'
         path = ordered[index] if index < len(ordered) else None
-        if path == padded_source:
-            path = padded_source.with_name('hero-panel-7-wide.jpg')
+        if path and path.parent == ROOT / 'photo/dorohedoro' and path.name in padded_artwork:
+            path = path.with_name(padded_artwork[path.name])
         if path:
             content = f'<image href="{image_url(path)}" {box} preserveAspectRatio="xMidYMid slice"/>'
         else:
