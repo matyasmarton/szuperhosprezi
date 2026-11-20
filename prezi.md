@@ -214,6 +214,7 @@
 		* Mentálisan instabil, lelkileg sérült gyerek főhősök
 		* EVA: Robot vagy Humanoid? 
 	* Bibliai ikonográfia
+	* [Kivágott jelenet videó beágyazva]
 		Forrás: When the Machines Stop: Fantasy, Reality, and Terminal Identity in "Neon Genesis Evangelion" and "Serial Experiments Lain"
 		https://www.jstor.org/stable/4241108?seq=2
 

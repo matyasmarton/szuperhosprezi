@@ -4,3 +4,4 @@ dist/
 .keating/
 .netlify/
 __pycache__/
+*_original.mp4
