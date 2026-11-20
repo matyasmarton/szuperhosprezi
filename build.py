@@ -315,6 +315,22 @@ def gallery_html(images, work_id, name, image_url):
             '<form method="dialog"><button class="ink-button close-button" aria-label="Bezárás" autofocus></button></form></header>'
             f'<div class="gallery-images">{slides}</div>{pager}</dialog></div>')
 
+def cover_cycle_html(cover_image, panels, name, image_url):
+    slides = [(cover_image, f'{name} — borító', 'cover')]
+    slides += [(path, f'{name} — {index}. panel', 'contain') for index, path in enumerate(panels, 1)]
+    items = '\n'.join(
+        f'<img class="cover-cycle-slide {fit}" src="{image_url(path)}" loading="lazy" alt="{caption}"'
+        f'{" hidden" if index else ""}>'
+        for index, (path, caption, fit) in enumerate(slides)
+    )
+    return (f'<div class="cover-cycle" data-cover-cycle role="group" aria-label="{name} — borító és panelek">'
+            f'{items}'
+            '<div class="cover-cycle-pager">'
+            '<button type="button" class="ink-button cover-cycle-prev" aria-label="Előző kép">‹</button>'
+            '<span class="gallery-count cover-cycle-count" aria-hidden="true"></span>'
+            '<button type="button" class="ink-button cover-cycle-next" aria-label="Következő kép">›</button>'
+            '</div></div>')
+
 
 def work_html(work, media_index, asset_url):
     work_id, name = slug(work.name), escape(work.name)
@@ -331,9 +347,17 @@ def work_html(work, media_index, asset_url):
                 f'{point_list or placeholder("SZÖVEG HELYE")}{extra}</article>')
     images = assets('photo', PHOTO_FOLDERS.get(work.folder, work.folder), IMAGE_EXTENSIONS)
     cover_image = cover(images)
-    cover_markup = (f'<img src="{asset_url(cover_image)}" loading="lazy" alt="{name} — borító">'
-                    if cover_image else placeholder('BORÍTÓ HELYE'))
-    cover_markup = f'<div class="cover-art">{cover_markup}</div>'
+    panels = sorted(
+        path for path in images
+        if re.search(r'panel\d+$', path.stem, re.I)
+        and not GALLERY_FILENAME.fullmatch(path.stem) and path != cover_image
+    ) if work.folder == 'dorohedoro' else []
+    if cover_image and panels:
+        cover_markup = f'<div class="cover-art">{cover_cycle_html(cover_image, panels, name, asset_url)}</div>'
+    else:
+        cover_markup = (f'<img src="{asset_url(cover_image)}" loading="lazy" alt="{name} — borító">'
+                        if cover_image else placeholder('BORÍTÓ HELYE'))
+        cover_markup = f'<div class="cover-art">{cover_markup}</div>'
     cover_switch = cover_video = ''
     subtitle = f'<p class="subtitle">{inlines(work.subtitle)}</p>' if work.subtitle else ''
     gallery = gallery_html(images, work_id, name, asset_url) if work.gallery else ''

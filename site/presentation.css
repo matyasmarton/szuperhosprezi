@@ -104,7 +104,8 @@ main { max-width: 1200px; margin: auto; padding: 3.5rem 2rem 5rem; }
 .cover .placeholder { aspect-ratio: 3 / 4; }
 .cover-art { position: relative; isolation: isolate; }
 .cover-art:has(img)::before { content: ''; position: absolute; inset: -.5rem; z-index: -1; background-image: var(--dots); }
-.cover [data-video] { margin: 0; }
+.cover-cycle-slide.contain { object-fit: contain; }
+.cover-cycle-pager { display: flex; justify-content: center; align-items: center; gap: .75rem; padding-top: .65rem; }
 .cover-switch { display: inline-flex; justify-self: start; align-items: center; gap: .65rem; margin-bottom: .85rem; padding: .375rem .6rem; border: var(--frame); background: var(--paper); color: var(--ink); box-shadow: 3px 3px 0 var(--ink); font: 1rem var(--display); letter-spacing: .05em; }
 .cover-switch:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
 .switch-track { display: flex; align-items: center; width: 2.25rem; height: 1.25rem; padding: .125rem; border: 2px solid var(--ink); background: var(--ink); }

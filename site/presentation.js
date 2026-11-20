@@ -122,6 +122,23 @@ for (const toggle of document.querySelectorAll('.cover-switch')) {
   })
 }
 
+for (const cycle of document.querySelectorAll('[data-cover-cycle]')) {
+  const slides = [...cycle.querySelectorAll('.cover-cycle-slide')]
+  const count = cycle.querySelector('.cover-cycle-count')
+  let selected = 0
+
+  function showImage(index) {
+    slides[selected].hidden = true
+    selected = (index + slides.length) % slides.length
+    slides[selected].hidden = false
+    if (count) count.textContent = `${selected + 1} / ${slides.length}`
+  }
+
+  cycle.querySelector('.cover-cycle-prev').addEventListener('click', () => showImage(selected - 1))
+  cycle.querySelector('.cover-cycle-next').addEventListener('click', () => showImage(selected + 1))
+  showImage(0)
+}
+
 for (const dialog of document.querySelectorAll('.gallery-dialog')) {
   const trigger = document.querySelector(`[aria-controls="${dialog.id}"]`)
   const slides = [...dialog.querySelectorAll('.gallery-slide')]
