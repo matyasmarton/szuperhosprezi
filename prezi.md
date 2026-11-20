@@ -2,12 +2,18 @@
 
 ## Háttér és előzmény
 ### Hokusai és a manga
+* Hokusai az 1800-as években készített fametszetes rajzokat, amiket a manga és a modern képregény előzményének tekintenek
+    Forrás: https://unlockfilebooks.xyz/Read/?book=0810993414 Hokusai, First Manga Master: Jocelyn Bouquillard
+
 
 ### Japán gazdasági és társadalmi háttér
 * Lost decades
-* jobboldali kormány
-* mega-vállalatok uralma minden szektor felett
+  * Míg az USA a világgazdaság legnagyobb szereplője lett, addig a japán gazdaság stagnál a mai napig a 90-es évektől kezdve
+* Jobboldali kormány, toxikus munkakultúra
+  * Brutális túlhajszoltság minden szektorban, rengeteg animátor halálra dolgozza magát, gyerekkortol kezdve durva megterhelés alatt mindenki
+* Mega-vállalatok uralma minden szektor felett
 	* Mitshubishi mint a világ egyik legnagyobb bankja, autógyártója, elektronikai gyártója, atomreaktor gyártója
+    Forrás: https://www.rieti.go.jp/en/publications/rd/003.html, https://www.ilo.org/publications/case-study-karoshi-death-overwork, https://en.wikipedia.org/wiki/Zaibatsu
 
 ## Előszereplős film
 * **Ultraman**
@@ -46,6 +52,22 @@
 	* Esztétikájában sokszor paródia
 	* Amerikai pankrációra (wrestling) emlékeztető jelenetek
 	* [Képek beszúrva, galéria]
+    Forrás: Susan Sonntag - Notes on Camp: Indeed the essence of Camp is its love of the unnatural: of artifice and exaggeration. And Camp is esoteric – something of a private code, a badge of identity even, among small urban cliques.
+    
+    Camp is a certain mode of aestheticism. It is one way of seeing the world as an aesthetic phenomenon. That way, the way of Camp, is not in terms of beauty, but in terms of the degree of artifice, of stylization.
+    To emphasize style is to slight content, or to introduce an attitude which is neutral with respect to content. It goes without saying that the Camp sensibility is disengaged, depoliticized – or at least apolitical.
+    „Not only is there a Camp vision, a Camp way of looking at things, Camp is as well a quality discoverable in objects and the behavior of persons. There are ‘campy’ movies, clothes, furniture, popular songs, novels, people, buildings … This distinction is important. True, the Camp eye has the power to transform experience. But not everything can be seen as Camp. It’s not all in the eye of the beholder.”
+    
+    Camp taste has an affinity for certain arts rather than others. Clothes, furniture, all the elements of visual décor, for instance, make up a large part of Camp. For Camp art is often decorative art, emphasizing texture, sensuous surface and style at the expense of content
+    
+    Concert music, though, because it is contentless, is rarely Camp. It offers no opportunity, say, for a contrast between silly or extravagant content and rich form … Sometimes whole art forms become saturated with Camp.
+    
+    There is a sense in which it is correct to say: ‘It’s too good to be Camp.’ Or ‘too important’, not marginal enough
+    „Thus, the personality and many of the works of Jean Cocteau are Camp, but not those of André Gide; the operas of Richard Strauss, but not those of Wagner; concoctions of Tin Pan Alley and Liverpool, but not jazz. Many examples of Camp are things which, from a ‘serious’ point of view, are either bad art or kitsch.”
+    All Camp objects, and persons, contain a large element of artifice. Nothing in nature can be campy … Rural Camp is still man-made, and most campy objects are urban.
+    „Camp is a vision of the world in terms of style – but a particular kind of style. It is the love of the exaggerated, the ‘off’, of things-being-what-they-are-not. The best example is in Art Nouveau, the most typical and fully developed Camp style. Art Nouveau objects, typically, convert one thing into something else: the lighting fixtures in the form of flowering plants, the living room which is really a grotto. A remarkable example: the Paris Métro entrances designed by Hector Guimard in the late 1890s in the shape of cast-iron orchid stalks.”
+    As a taste in persons, Camp responds particularly to the markedly attenuated and to the strongly exaggerated.
+    „Examples: the swooning, slim, sinuous figures of pre-Raphaelite painting and poetry; the thin, flowing, sexless bodies in Art Nouveau prints and posters, presented in relief on lamps and ashtrays; the haunting androgynous vacancy behind the perfect beauty of Greta Garbo. Here, Camp taste draws on a mostly unacknowledged truth of taste: the most refined form of sexual attractiveness (as well as the most refined form of sexual pleasure) consists in going against the grain of one’s sex. What is most beautiful in virile men is something feminine; what is most beautiful in feminine women is something masculine … Allied to the Camp taste for the androgynous is something that seems quite different but isn’t: a relish for the exaggeration of sexual characteristics and personality mannerisms. For obvious reasons, the best examples that can be cited are movie stars. The corny flamboyant femaleness of Jayne Mansfield, Gina Lollobrigida, Jane Russell, Virginia Mayo; the exaggerated he-man-ness of Steve Reeves, Victor Mature.”
 
 
 ## Nyugati koprodukciók
@@ -208,12 +230,11 @@
 		the kawaii subverts its charming, non-threatening meaning, being used as a form of social
 		critique and change.
 
-* **Neon Genesis Evangelion - End of Evangelion **
+* **Neon Genesis Evangelion - Depressziós szuperhős **
 	* Coming of Age történet egy apokalipszisbe bújtatva
 	* Mecha anime szubverzió
-		* Mentálisan instabil, lelkileg sérült gyerek főhősök
-		* EVA: Robot vagy Humanoid? 
-	* Bibliai ikonográfia
+	* Mentálisan instabil, lelkileg sérült gyerek főhősök
+	* EVA: Robot vagy Humanoid? 
 	* [Kivágott jelenet videó beágyazva]
 		Forrás: When the Machines Stop: Fantasy, Reality, and Terminal Identity in "Neon Genesis Evangelion" and "Serial Experiments Lain"
 		https://www.jstor.org/stable/4241108?seq=2

@@ -19,6 +19,7 @@ FOLDERS = {
 PHOTO_FOLDERS = {'ultraman': 'Ultraman', 'pluto': 'Pluto'}
 GALLERY_FILENAME = re.compile(r'(\d+)\s*-\s*(.+)')
 BIBLIOGRAPHY = {
+    'zebraman': [dict(title='Notes on “Camp”', author='Susan Sontag')],
     'ultraman': [dict(title='Transformational Magic: Some Japanese super-heroes and monsters', author='Tom Gill')],
     'afro_samurai': [dict(title='Afro-Samurai: techno-Orientalism and contemporary hip-hop', author='Ken McLeod',
                          url='https://www.jstor.org/stable/24736760', cite='Vol. 32, No. 2 (May 2013), pp. 259–275 (17 pages)')],
@@ -117,6 +118,7 @@ class Work:
     gallery: bool = False
     video: bool = False
     sources: list = field(default_factory=list)
+    background_sources: list = field(default_factory=list)
 
 
 @dataclass
@@ -131,19 +133,35 @@ def parse_lecture(markdown):
     work = None
     uses_headings = False
     source_lines = None
+    source_head = ''
 
     def close_source():
-        nonlocal source_lines
+        nonlocal source_lines, source_head
         if source_lines is not None and work is not None:
-            work.sources.extend(parse_sources(work.folder, source_lines))
+            if work.folder:
+                work.sources.extend(parse_sources(work.folder, source_lines))
+            else:
+                paragraphs, current = [], []
+                for source_line in source_lines:
+                    if source_line:
+                        current.append(source_line)
+                    elif current:
+                        paragraphs.append(' '.join(current))
+                        current = []
+                if current:
+                    paragraphs.append(' '.join(current))
+                if source_head or paragraphs:
+                    work.background_sources.append((source_head, paragraphs))
         source_lines = None
+        source_head = ''
 
     for raw in markdown.splitlines():
         indent = raw[:len(raw) - len(raw.lstrip(' \t'))]
-        line = indent.replace('    ', '\t') + raw[len(indent):]
+        line = '\t' * (len(indent.replace('\t', '  ')) // 2) + raw[len(indent):]
         text = line.strip()
         if text.startswith('Forrás:'):
             close_source()
+            source_head = text[len('Forrás:'):].strip()
             source_lines = []
             continue
         if source_lines is not None:
@@ -226,10 +244,35 @@ def hero_html(image_url):
                        f'<text x="{x + width / 2}" y="{y + height / 2}" text-anchor="middle">KÉP HELYE</text>')
         panels.append(f'<g clip-path="url(#{clip})" data-hero-panel>{content}</g>')
         seams.append(f'{polygon} fill="none" stroke="var(--ink)" stroke-width="4" vector-effect="non-scaling-stroke"/>')
+
     return ('<svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">\n'
             '<defs><pattern id="hero-dots" width="6" height="6" patternUnits="userSpaceOnUse">'
             '<circle cx="2" cy="2" r="1" fill="var(--ink)" opacity=".18"/></pattern>\n'
             + '\n'.join(clips) + '</defs>\n' + '\n'.join(panels + seams) + '\n</svg>')
+
+def linkify(text):
+    safe = escape(text)
+
+    def link(match):
+        url = match.group(0)
+        trail = ''
+        while url and url[-1] in '.,:;!?)':
+            trail = url[-1] + trail
+            url = url[:-1]
+        return f'<a href="{url}" target="_blank" rel="noreferrer">{url}</a>{trail}'
+
+    return re.sub(r'https?://[^\s<]+', link, safe)
+
+
+def background_sources_html(blocks):
+    parts = []
+    for head, paragraphs in blocks:
+        lines = ['<div class="background-source"><span class="background-source-label" lang="hu">Forrás</span>']
+        if head:
+            lines.append(f'<p>{linkify(head)}</p>')
+        lines.extend(f'<p>{linkify(paragraph)}</p>' for paragraph in paragraphs)
+        parts.append('\n'.join(lines) + '</div>')
+    return '\n'.join(parts)
 
 
 def placeholder(label):
@@ -283,8 +326,9 @@ def work_html(work, media_index, asset_url):
     point_list = '<ul class="points">' + ''.join(points) + '</ul>' if points else ''
     title = f'<h3>{name}</h3>'
     if not work.folder:
+        extra = background_sources_html(work.background_sources)
         return (f'<article data-subsection class="text-panel" id="{work_id}">{title}'
-                f'{point_list or placeholder("SZÖVEG HELYE")}</article>')
+                f'{point_list or placeholder("SZÖVEG HELYE")}{extra}</article>')
     images = assets('photo', PHOTO_FOLDERS.get(work.folder, work.folder), IMAGE_EXTENSIONS)
     cover_image = cover(images)
     cover_markup = (f'<img src="{asset_url(cover_image)}" loading="lazy" alt="{name} — borító">'

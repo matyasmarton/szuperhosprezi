@@ -167,6 +167,10 @@ main { max-width: 1200px; margin: auto; padding: 3.5rem 2rem 5rem; }
 .background-body .text-panel + .text-panel { border-top: var(--frame); padding-top: 1.25rem; }
 .background-body .text-panel h3 { color: var(--red); font-size: 1.25rem; }
 .background-body .points { font-size: inherit; }
+.background-source { margin-top: 1rem; border-top: var(--frame); padding-top: .75rem; font-size: .875rem; }
+.background-source-label { display: block; margin-bottom: .25rem; color: var(--red); font-size: .6875rem; font-weight: bold; letter-spacing: .1em; }
+.background-source p + p { margin-top: .5rem; }
+.background-source a { color: var(--red); overflow-wrap: anywhere; }
 .source-entry + .source-entry { margin-top: 2rem; padding-top: 1.5rem; border-top: var(--frame); }
 .source-entry h4 { margin-bottom: .5rem; font-size: 1.25rem; line-height: 1.25; }
 .source-author, .source-cite, .no-sources { margin-top: .25rem; color: var(--soft); }
